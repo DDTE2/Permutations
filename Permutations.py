@@ -6,7 +6,7 @@ except:
     lcm = lambda a, b: a * b // gcd(a, b)
 
 class perms:
-    def __init__(self, start=None, end=None): ## start - начальное состояние, end - конечное
+    def __init__(self, start={}, end=None): ## start - начальное состояние, end - конечное
         if isinstance(start, list) or isinstance(start, tuple):
             if isinstance(end, list) or isinstance(end, tuple):
                 l = len(start)
@@ -83,7 +83,7 @@ class perms:
     def __hash__(self): ## Хэширование перестановки, как строки
         return str(self).__hash__()
 
-    def __mul__(self, other):
+    def __mul__(self, other): ## Вычисление композиции (произведения перстановок)
         if not isinstance(other, perms):
             try:
                 raise TypeError(f'Неизвестный тип {perms}')
@@ -119,7 +119,7 @@ class perms:
 
         return other * self
 
-    def __pow__(self, power, modulo=None):
+    def __pow__(self, power, modulo=None): ## Возведение перестановки в степень
         if not isinstance(power, int):
             raise TypeError(f'{power} должно быть целым числом')
 
@@ -130,11 +130,20 @@ class perms:
 
         return perms(res)
 
-    def __xor__(self, other):
+    def __xor__(self, other): ## Возведение перестановки в степень, используя оператор ^
         return self ** other
 
-    def __eq__(self, other):
+    def __eq__(self, other):## Проверка, равны ли перестановки
         return str(self) == str(other)
+
+    def __bool__(self): ## Проверка, является ли перестановка тождественной
+        if self == '()':
+            return False
+        else:
+            return True
+
+    def copy(self): ## Копирование перестановки
+        return perms(self.dict)
 
 
 def exponentiation_cycles(cycle, power):
