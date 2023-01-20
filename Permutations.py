@@ -56,10 +56,13 @@ class perms:
 
         return sorted(res)
     def order_calc(self): ## Вычисление порядка перестановки
+        self.number_of_elements = 0 ##Число элементов перестановки
         order = 1
 
         for a in self.cycles:
-            order = lcm(len(a), order)
+            l = len(a)
+            order = lcm(l, order)
+            self.number_of_elements += l
 
         return order
     def parity_calc(self): ## Вычисление чётности перестановки
@@ -144,7 +147,6 @@ class perms:
 
     def copy(self): ## Копирование перестановки
         return perms(self.dict)
-
 
 def exponentiation_cycles(cycle, power):
     order = len(cycle)
