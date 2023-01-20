@@ -73,7 +73,11 @@ class perms:
 
     def __str__(self): ## Строковое представление перестановки
         res = [str(a) for a in self.cycles]
-        return ''.join(res)
+
+        if res:
+            return ''.join(res)
+        else:
+            return '()'
     def __repr__(self): ## Внутреннее представление перестановки в Python
         return str(self)
     def __hash__(self): ## Хэширование перестановки, как строки
@@ -115,6 +119,36 @@ class perms:
 
         return other * self
 
+    def __pow__(self, power, modulo=None):
+        if not isinstance(power, int):
+            raise TypeError(f'{power} должно быть целым числом')
 
-class cycles:
-    def __init__(self, cycle):
+        res = {}
+        for cycle in self.cycles:
+            x = exponentiation_cycles(cycle, power)
+            res.update(x)
+
+        return perms(res)
+
+    def __xor__(self, other):
+        return self ** other
+
+    def __eq__(self, other):
+        return str(self) == str(other)
+
+
+def exponentiation_cycles(cycle, power):
+    order = len(cycle)
+    power %= order
+
+    if not power:
+        return {}
+
+    perm = {}
+    for a in range(order):
+        x = cycle[a]
+        y = cycle[(a + power) % order]
+
+        perm[x] = y
+
+    return perm
