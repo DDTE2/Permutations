@@ -1,4 +1,7 @@
-from math.Permutations import perms
+from puzzle.generation import puzzle
 
-A = perms(start={6:7,7:8,8:9,9:6,1:2,2:3,3:1,5:4,4:5})
-B = perms([1, 2, 3, 4], [4, 3, 1, 2])
+puzz = puzzle(layers=(5, 10),
+              elements=(5, 20),
+              use_id_perm=False)
+
+print(puzz)
